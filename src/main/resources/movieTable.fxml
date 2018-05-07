@@ -13,7 +13,7 @@
     <center>
         <TableView fx:id="movieTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn id="name" prefWidth="246.0" text="Nazwa" />
+                <TableColumn id="name" fx:id="movieNames" prefWidth="246.0" text="Nazwa" />
                 <TableColumn id="description" prefWidth="387.0" text="Opis" />
                 <TableColumn id="length" prefWidth="67.0" text="Długość" />
                 <TableColumn id="minAge" minWidth="0.0" prefWidth="100.0" text="Ograniczenia" />
@@ -28,7 +28,7 @@
                 <TextField fx:id="length" layoutX="10.0" layoutY="49.0" promptText="Długość" />
                 <TextField fx:id="minAge" layoutX="10.0" layoutY="49.0" promptText="Ograniczenia" />
                 <Button mnemonicParsing="false" onAction="#add" text="Dodaj" />
-            <Button mnemonicParsing="false" onAction="#onDelete" text="Usuń" />
+                <Button mnemonicParsing="false" onAction="#onDelete" text="Usuń" />
             <Pane fx:id="poster" minHeight="-Infinity" minWidth="-Infinity" prefHeight="306.0" prefWidth="227.0">
                <VBox.margin>
                   <Insets left="1.0" right="1.0" top="50.0" />

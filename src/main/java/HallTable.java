@@ -14,6 +14,22 @@ public class HallTable implements HierarchicalController<HomeController>{
     public TextField type;
     public TableView<Hall> hallTable;
 
+    public void onDelete(ActionEvent actionEvent) {
+        int selRow = hallTable.getSelectionModel().getFocusedIndex();
+        hallTable.getItems().remove(selRow);
+        try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
+            ses.beginTransaction();
+            Hall hall = ses.get(Hall.class,  hallTable.getItems().get(selRow).getId());
+            ses.delete(hall);
+            ses.getTransaction().commit();
+        } catch (HibernateException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.show();
+        }
+    }
+
+
     public void add(ActionEvent actionEvent) {
         Hall h = new Hall();
         h.setNumber(number.getText());
@@ -60,4 +76,5 @@ public class HallTable implements HierarchicalController<HomeController>{
         this.parentController = parentController;
         hallTable.setItems(parentController.getDataContainer().getHalls());
     }
+
 }

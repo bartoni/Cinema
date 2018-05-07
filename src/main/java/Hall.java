@@ -18,6 +18,8 @@ public class Hall {
     @Column(name = "TYPE")
     protected String type;
 
+
+
     public Integer getId() {
         return id;
     }

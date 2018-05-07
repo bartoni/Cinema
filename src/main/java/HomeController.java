@@ -4,6 +4,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class HomeController implements HierarchicalController<HomeController>{
@@ -29,6 +30,8 @@ public class HomeController implements HierarchicalController<HomeController>{
         loadIntoPane("hallTable.fxml");
     }
 
+    public void showTable(ActionEvent actionEvent) { loadIntoPane("showTable.fxml");}
+
     private void loadIntoPane(String fxml) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
         try {
@@ -53,4 +56,5 @@ public class HomeController implements HierarchicalController<HomeController>{
     public void setParentController(HomeController parent) {
 
     }
+
 }

@@ -17,6 +17,7 @@ public class DataContainer {
     private final SessionFactory sessionFactory;
     protected ObservableList<Movie> movies;
     protected ObservableList<Hall> halls;
+    protected ObservableList<Show> shows;
 
     public ObservableList<Movie> getMovies() {
         return movies;
@@ -26,13 +27,17 @@ public class DataContainer {
         return halls;
     }
 
+    public ObservableList<Show> getShows() { return shows; }
+
     public DataContainer() {
         movies = FXCollections.observableArrayList();
         halls = FXCollections.observableArrayList();
+        shows = FXCollections.observableArrayList();
         config = new Configuration().configure("hibernate.cfg.xml");
         sessionFactory = config.buildSessionFactory();
         loadMoviesFromDatabase();
         loadHallsFromDatabase();
+        loadShowsFromDatabase();
     }
 
     private void loadMoviesFromDatabase() {
@@ -53,6 +58,19 @@ public class DataContainer {
             ses.beginTransaction();
             Query<Hall> query = ses.createQuery("from Hall", Hall.class);
             halls.addAll(query.list());
+            ses.getTransaction().commit();
+        } catch (HibernateException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.show();
+        }
+    }
+
+    private void loadShowsFromDatabase() {
+        try (Session ses = sessionFactory.openSession()) {
+            ses.beginTransaction();
+            Query<Show> query = ses.createQuery("from Show", Show.class);
+            shows.addAll(query.list());
             ses.getTransaction().commit();
         } catch (HibernateException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);

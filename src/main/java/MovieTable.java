@@ -8,6 +8,7 @@ import org.hibernate.Session;
 
 public class MovieTable implements HierarchicalController<HomeController>{
 
+    public TableColumn movieNames;
     private HomeController parentController;
 
     public TextField name;

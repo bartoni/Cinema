@@ -16,18 +16,24 @@
         <GridPane fx:id="buttons" prefHeight="50.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#movieTable" prefHeight="120.0" prefWidth="112.0" text="FILMY" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#showTable" prefHeight="50.0" prefWidth="110.0" text="SEANSE" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="Arial" size="18.0" />
+               </font>
+            </Button>
+                <Button contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#movieTable" prefHeight="50.0" prefWidth="110.0" text="FILMY" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <font>
                         <Font name="Arial" size="18.0" />
                     </font>
                 </Button>
-                <Button alignment="CENTER" mnemonicParsing="false" onAction="#hallTable" prefHeight="118.0" prefWidth="110.0" text="SALE" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <Button alignment="CENTER" mnemonicParsing="false" onAction="#hallTable" prefHeight="50.0" prefWidth="110.0" text="SALE" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <font>
                         <Font name="Arial" size="18.0" />
                     </font>

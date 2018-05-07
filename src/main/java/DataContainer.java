@@ -28,6 +28,7 @@ public class DataContainer {
 
     public DataContainer() {
         movies = FXCollections.observableArrayList();
+        halls = FXCollections.observableArrayList();
         config = new Configuration().configure("hibernate.cfg.xml");
         sessionFactory = config.buildSessionFactory();
         loadMoviesFromDatabase();

@@ -1,7 +1,6 @@
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import org.hibernate.HibernateException;
@@ -11,18 +10,27 @@ public class MovieTable implements HierarchicalController<HomeController>{
 
     private HomeController parentController;
 
-    public void save(ActionEvent actionEvent) {
-    }
-
-    public void load(ActionEvent actionEvent) {
-    }
-
     public TextField name;
     public TextField description;
     public TextField length;
     public TextField minAge;
     public Pane poster;
     public TableView<Movie> movieTable;
+
+    public void onDelete(ActionEvent actionEvent) {
+        int selRow = movieTable.getSelectionModel().getFocusedIndex();
+        movieTable.getItems().remove(selRow);
+        try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
+            ses.beginTransaction();
+            Movie movie = ses.get(Movie.class,  movieTable.getItems().get(selRow-1).getId());
+            ses.delete(movie);
+            ses.getTransaction().commit();
+        } catch (HibernateException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.show();
+        }
+    }
 
     public void add(ActionEvent actionEvent) {
         Movie m = new Movie();
@@ -33,6 +41,8 @@ public class MovieTable implements HierarchicalController<HomeController>{
         addBase(m);
         movieTable.getItems().add(m);
     }
+
+
 
     public void addBase(Movie movie) {
         try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
@@ -69,8 +79,9 @@ public class MovieTable implements HierarchicalController<HomeController>{
     }
 
     @Override
-    public void setParentController(HomeController parent) {
+    public void setParentController(HomeController parentController) {
         this.parentController = parentController;
-
+        movieTable.setItems(parentController.getDataContainer().getMovies());
     }
+
 }

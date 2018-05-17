@@ -11,13 +11,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-public class DataContainer {
+class DataContainer {
 
     private final Configuration config;
     private final SessionFactory sessionFactory;
-    protected ObservableList<Movie> movies;
-    protected ObservableList<Hall> halls;
-    protected ObservableList<Show> shows;
+    private ObservableList<Movie> movies;
+    private ObservableList<Hall> halls;
+    private ObservableList<Show> shows;
 
     public ObservableList<Movie> getMovies() {
         return movies;
@@ -28,6 +28,7 @@ public class DataContainer {
     }
 
     public ObservableList<Show> getShows() { return shows; }
+
 
     public DataContainer() {
         movies = FXCollections.observableArrayList();

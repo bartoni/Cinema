@@ -19,7 +19,7 @@ public class Movie implements Serializable {
     @Column(name = "LENGTH")
     protected String length;
 
-    @Column(name = "minAge")
+    @Column(name = "MINAGE")
     protected String minAge;
 
     public Integer getId() {

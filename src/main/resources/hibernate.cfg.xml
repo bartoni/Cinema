@@ -25,6 +25,7 @@
 
         <mapping class="Movie" />
         <mapping class="Hall" />
+        <mapping class="Show" />
         <!-- <mapping resource="bean/User.hbm.xml" /> -->
 
     </session-factory>

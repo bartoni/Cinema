@@ -12,9 +12,9 @@ public class HomeController implements HierarchicalController<HomeController>{
     public Pane pane;
     public GridPane buttons;
 
-    protected DataContainer dataContainer;
+    private DataContainer dataContainer;
 
-    public DataContainer getDataContainer() {
+    DataContainer getDataContainer() {
         return dataContainer;
     }
 
@@ -38,8 +38,8 @@ public class HomeController implements HierarchicalController<HomeController>{
             final BorderPane load = loader.load();
             pane.getChildren().clear();
             pane.getChildren().add(load);
-            HierarchicalController<HomeController> daneController = loader.getController();
-            daneController.setParentController(this);
+            HierarchicalController<HomeController> dataController = loader.getController();
+            dataController.setParentController(this);
 
         } catch (IOException e) {
             e.printStackTrace();

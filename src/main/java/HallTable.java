@@ -15,11 +15,10 @@ public class HallTable implements HierarchicalController<HomeController>{
     public TableView<Hall> hallTable;
 
     public void onDelete(ActionEvent actionEvent) {
-        int selRow = hallTable.getSelectionModel().getFocusedIndex();
-        hallTable.getItems().remove(selRow);
         try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
             ses.beginTransaction();
-            Hall hall = ses.get(Hall.class,  hallTable.getItems().get(selRow).getId());
+            Hall hall = ses.get(
+                    Hall.class, hallTable.getItems().get(hallTable.getSelectionModel().getFocusedIndex()).getId());
             ses.delete(hall);
             ses.getTransaction().commit();
         } catch (HibernateException e) {
@@ -27,6 +26,7 @@ public class HallTable implements HierarchicalController<HomeController>{
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.show();
         }
+        hallTable.getItems().remove(hallTable.getSelectionModel().getFocusedIndex());
     }
 
 

@@ -6,7 +6,11 @@ import javafx.scene.layout.Region;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MovieTable implements HierarchicalController<HomeController>{
+
 
     public TableColumn movieNames;
     private HomeController parentController;
@@ -19,11 +23,10 @@ public class MovieTable implements HierarchicalController<HomeController>{
     public TableView<Movie> movieTable;
 
     public void onDelete(ActionEvent actionEvent) {
-        int selRow = movieTable.getSelectionModel().getFocusedIndex();
-        movieTable.getItems().remove(selRow);
         try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
             ses.beginTransaction();
-            Movie movie = ses.get(Movie.class,  movieTable.getItems().get(selRow-1).getId());
+            Movie movie = ses.get(
+                    Movie.class, movieTable.getItems().get(movieTable.getSelectionModel().getFocusedIndex()).getId());
             ses.delete(movie);
             ses.getTransaction().commit();
         } catch (HibernateException e) {
@@ -31,6 +34,7 @@ public class MovieTable implements HierarchicalController<HomeController>{
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.show();
         }
+        movieTable.getItems().remove(movieTable.getSelectionModel().getFocusedIndex());
     }
 
     public void add(ActionEvent actionEvent) {
@@ -45,7 +49,7 @@ public class MovieTable implements HierarchicalController<HomeController>{
 
 
 
-    public void addBase(Movie movie) {
+    private void addBase(Movie movie) {
         try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
             ses.beginTransaction();
             ses.persist(movie);
@@ -84,5 +88,4 @@ public class MovieTable implements HierarchicalController<HomeController>{
         this.parentController = parentController;
         movieTable.setItems(parentController.getDataContainer().getMovies());
     }
-
 }

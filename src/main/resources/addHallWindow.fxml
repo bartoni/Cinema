@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="360.0" prefWidth="540.0" xmlns="http://javafx.com/javafx/8.0.141"
+            fx:controller="ShowCreator">
+    <center>
+        <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="275.0" prefWidth="440.0"
+              BorderPane.alignment="CENTER">
+            <children>
+                <TextField fx:id="name" promptText="Nazwa filmu">
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <VBox.margin>
+                        <Insets bottom="20.0"/>
+                    </VBox.margin>
+                </TextField>
+                <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="241.0" prefWidth="440.0">
+                    <children>
+                        <VBox prefHeight="222.0" prefWidth="198.0">
+                            <children>
+                                <Label prefHeight="21.0" prefWidth="210.0" text="Kategoria ograniczenia wieku:">
+                                    <VBox.margin>
+                                        <Insets bottom="10.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <RadioButton mnemonicParsing="false" text="G">
+                                    <toggleGroup>
+                                        <ToggleGroup fx:id="ageCategory"/>
+                                    </toggleGroup>
+                                </RadioButton>
+                                <RadioButton mnemonicParsing="false" text="PG" toggleGroup="$ageCategory"/>
+                                <RadioButton mnemonicParsing="false" text="PG-13" toggleGroup="$ageCategory"/>
+                                <RadioButton mnemonicParsing="false" text="R" toggleGroup="$ageCategory"/>
+                                <RadioButton mnemonicParsing="false" text="NC-17" toggleGroup="$ageCategory"/>
+                                <TextField fx:id="length" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="31.0"
+                                           prefWidth="115.0" promptText="Długość (min.)">
+                                    <VBox.margin>
+                                        <Insets top="20.0"/>
+                                    </VBox.margin>
+                                </TextField>
+                                <Button mnemonicParsing="false" onAction="#add" text="Dodaj">
+                                    <font>
+                                        <Font name="System Bold" size="15.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets top="20.0"/>
+                                    </VBox.margin>
+                                </Button>
+                            </children>
+                        </VBox>
+                        <TextArea fx:id="description" prefHeight="238.0" prefWidth="224.0" promptText="Opis filmu"
+                                  wrapText="true">
+                            <HBox.margin>
+                                <Insets left="20.0"/>
+                            </HBox.margin>
+                        </TextArea>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

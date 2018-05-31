@@ -1,25 +1,24 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 public class MovieTable implements HierarchicalController<HomeController>{
 
-
-    public TableColumn movieNames;
     private HomeController parentController;
 
-    public TextField name;
-    public TextField description;
-    public TextField length;
-    public TextField minAge;
-    public Pane poster;
     public TableView<Movie> movieTable;
 
     public void onDelete(ActionEvent actionEvent) {
@@ -37,30 +36,6 @@ public class MovieTable implements HierarchicalController<HomeController>{
         movieTable.getItems().remove(movieTable.getSelectionModel().getFocusedIndex());
     }
 
-    public void add(ActionEvent actionEvent) {
-        Movie m = new Movie();
-        m.setName(name.getText());
-        m.setDescription(description.getText());
-        m.setLength(length.getText());
-        m.setMinAge(minAge.getText());
-        addBase(m);
-        movieTable.getItems().add(m);
-    }
-
-
-
-    private void addBase(Movie movie) {
-        try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
-            ses.beginTransaction();
-            ses.persist(movie);
-            ses.getTransaction().commit();
-        } catch (HibernateException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
-            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-            alert.show();
-        }
-    }
-
 
     public void initialize() {
         for (TableColumn<Movie, ?> movieTableColumn : movieTable.getColumns()) {
@@ -75,6 +50,19 @@ public class MovieTable implements HierarchicalController<HomeController>{
             } else if ("minAge".equals(movieTableColumn.getId())) {
                 movieTableColumn.setCellValueFactory(new PropertyValueFactory<>("minAge"));
             }
+
+
+            ObservableList<Movie> data = FXCollections.observableArrayList();
+            SessionFactory sf = new Configuration().configure().buildSessionFactory();
+            Session ses = sf.openSession();
+            Query query = ses.createQuery("from Movie", Movie.class);
+            Iterator ite = query.iterate();
+            while (ite.hasNext()) {
+                Movie obj = (Movie) ite.next();
+
+                data.add(obj);
+            }
+            movieTable.setItems(data);
         }
     }
 
@@ -86,6 +74,5 @@ public class MovieTable implements HierarchicalController<HomeController>{
     @Override
     public void setParentController(HomeController parentController) {
         this.parentController = parentController;
-        movieTable.setItems(parentController.getDataContainer().getMovies());
     }
 }

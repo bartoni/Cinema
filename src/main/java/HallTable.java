@@ -74,7 +74,6 @@ public class HallTable implements HierarchicalController<HomeController>{
     @Override
     public void setParentController(HomeController parentController) {
         this.parentController = parentController;
-        hallTable.setItems(parentController.getDataContainer().getHalls());
     }
 
 }

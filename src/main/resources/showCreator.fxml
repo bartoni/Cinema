@@ -4,9 +4,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="670.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.141"
-            fx:controller="ShowCreator">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0"
+            xmlns="http://javafx.com/javafx/8.0.141" fx:controller="ShowCreator">
     <top>
         <Label alignment="CENTER" graphicTextGap="12.0" prefHeight="65.0" prefWidth="399.0"
                text="Kreator dodawania seansów" BorderPane.alignment="CENTER">
@@ -16,45 +16,52 @@
         </Label>
     </top>
     <center>
-        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="880.0"
+        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="165.0" prefWidth="1080.0"
               BorderPane.alignment="TOP_CENTER">
             <BorderPane.margin>
                 <Insets top="100.0"/>
             </BorderPane.margin>
             <children>
-                <ComboBox fx:id="moviePicker" onMouseClicked="#fillMovies" prefHeight="31.0" prefWidth="267.0"
-                          promptText="Wybierz film..."/>
-                <Button mnemonicParsing="false" onAction="#addMovie" text="+">
-                    <font>
-                        <Font name="System Bold" size="15.0"/>
-                    </font>
-                    <HBox.margin>
-                        <Insets right="50.0"/>
-                    </HBox.margin>
-                </Button>
-                <ComboBox fx:id="hallPicker" onMouseClicked="#fillHalls" prefWidth="150.0" promptText="Wybierz salę...">
-                    <HBox.margin>
-                        <Insets right="50.0"/>
-                    </HBox.margin>
-                </ComboBox>
-                <DatePicker fx:id="datePicker" prefHeight="31.0" prefWidth="148.0" promptText="Wybierz datę...">
-                    <HBox.margin>
-                        <Insets right="50.0"/>
-                    </HBox.margin>
-                </DatePicker>
-                <TextField fx:id="hourField" prefHeight="31.0" prefWidth="42.0" promptText="hh">
-                    <HBox.margin>
-                        <Insets right="5.0"/>
-                    </HBox.margin>
-                </TextField>
-                <TextField fx:id="minuteField" prefHeight="31.0" prefWidth="47.0" promptText="mm"/>
+                <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0"
+                      prefWidth="880.0">
+                    <children>
+                        <ComboBox fx:id="moviePicker" onMouseClicked="#fillMovies" prefHeight="31.0" prefWidth="267.0"
+                                  promptText="Wybierz film..."/>
+                        <Button mnemonicParsing="false" onAction="#addMovie" text="+">
+                            <font>
+                                <Font name="System Bold" size="15.0"/>
+                            </font>
+                            <HBox.margin>
+                                <Insets right="50.0"/>
+                            </HBox.margin>
+                        </Button>
+                        <ComboBox fx:id="hallPicker" onMouseClicked="#fillHalls" prefWidth="150.0"
+                                  promptText="Wybierz salę...">
+                            <HBox.margin>
+                                <Insets right="50.0"/>
+                            </HBox.margin>
+                        </ComboBox>
+                        <DatePicker fx:id="datePicker" prefHeight="31.0" prefWidth="148.0" promptText="Wybierz datę...">
+                            <HBox.margin>
+                                <Insets right="50.0"/>
+                            </HBox.margin>
+                        </DatePicker>
+                        <TextField fx:id="hourField" prefHeight="31.0" prefWidth="42.0" promptText="hh">
+                            <HBox.margin>
+                                <Insets right="5.0"/>
+                            </HBox.margin>
+                        </TextField>
+                        <TextField fx:id="minuteField" prefHeight="31.0" prefWidth="47.0" promptText="mm"/>
+                    </children>
+                </HBox>
+                <Button fx:id="addShow" alignment="CENTER" mnemonicParsing="false" text="Dodaj seans"/>
             </children>
-        </HBox>
+        </VBox>
     </center>
     <bottom>
-        <Button fx:id="addShow" mnemonicParsing="false" text="Dodaj seans" BorderPane.alignment="TOP_CENTER">
+        <Button mnemonicParsing="false" onAction="#onBack" text="Cofnij" BorderPane.alignment="CENTER_RIGHT">
             <BorderPane.margin>
-                <Insets bottom="300.0"/>
+                <Insets bottom="20.0" right="20.0"/>
             </BorderPane.margin>
         </Button>
     </bottom>

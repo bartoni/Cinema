@@ -6,12 +6,21 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("home.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
+        Parent root = loader.load();
         primaryStage.setTitle("Cinema");
-        primaryStage.setScene(new Scene(root, 1080, 720));
+        root.setId("pane");
+        Scene scene = new Scene(root, 1024, 563);
+        scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
+
+        primaryStage.setScene(scene);
         primaryStage.show();
+
+        HomeController controller = loader.getController();
+        controller.setStage(primaryStage);
     }
 
     public static void main(String[] args) {

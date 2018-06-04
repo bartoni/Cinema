@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0"
+            xmlns="http://javafx.com/javafx/8.0.141" fx:controller="MovieSearch">
+    <top>
+        <VBox alignment="CENTER" fillWidth="false" prefHeight="115.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label alignment="CENTER" text="Wybierz film, by wyświetlić informacje" VBox.vgrow="NEVER">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <ListView fx:id="movieList" onMouseClicked="#onClick" orientation="HORIZONTAL" prefHeight="43.0"
+                          prefWidth="1106.0">
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" top="20.0"/>
+                    </VBox.margin>
+                </ListView>
+            </children>
+        </VBox>
+    </top>
+    <center>
+        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+              minWidth="-Infinity" prefHeight="396.0" prefWidth="663.0" BorderPane.alignment="TOP_LEFT">
+            <BorderPane.margin>
+                <Insets left="20.0" right="20.0" top="20.0"/>
+            </BorderPane.margin>
+            <children>
+                <Label fx:id="repertoireLabel" alignment="CENTER" text="Sprawdź repertuar na konkretny dzień"
+                       visible="false">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <DatePicker fx:id="datePicker" promptText="Wybierz dzień" visible="false">
+                    <VBox.margin>
+                        <Insets top="20.0"/>
+                    </VBox.margin>
+                </DatePicker>
+                <TableView fx:id="repertoireTable" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0"
+                           visible="false">
+                    <columns>
+                        <TableColumn prefWidth="148.0" text="Godzina"/>
+                        <TableColumn prefWidth="51.0" text="Sala"/>
+                    </columns>
+                    <VBox.margin>
+                        <Insets top="20.0"/>
+                    </VBox.margin>
+                </TableView>
+            </children>
+        </VBox>
+    </center>
+    <left>
+        <VBox prefHeight="555.0" prefWidth="323.0" BorderPane.alignment="CENTER">
+            <children>
+                <TextArea fx:id="description" prefHeight="396.0" prefWidth="323.0" promptText="Opis" visible="false">
+                    <VBox.margin>
+                        <Insets top="20.0"/>
+                    </VBox.margin>
+                </TextArea>
+                <Label fx:id="ageCategory" text="Kategoria wiekowa:" visible="false">
+                    <VBox.margin>
+                        <Insets bottom="20.0" top="20.0"/>
+                    </VBox.margin>
+                </Label>
+                <Label fx:id="length" text="Długość filmu:" visible="false"/>
+            </children>
+            <BorderPane.margin>
+                <Insets left="20.0"/>
+            </BorderPane.margin>
+        </VBox>
+    </left>
+    <right>
+        <HBox alignment="BOTTOM_CENTER" prefHeight="605.0" prefWidth="250.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAdd" prefHeight="31.0" prefWidth="166.0"
+                        text="Dodaj film lub seans">
+                    <HBox.margin>
+                        <Insets right="10.0"/>
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#onDelete" text="Usuń">
+                    <HBox.margin>
+                        <Insets right="20.0"/>
+                    </HBox.margin>
+                </Button>
+            </children>
+            <padding>
+                <Insets bottom="20.0"/>
+            </padding>
+        </HBox>
+    </right>
+</BorderPane>

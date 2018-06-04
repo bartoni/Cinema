@@ -14,13 +14,13 @@ public class Movie implements Serializable {
     protected String name;
 
     @Column(name = "DESCRIPTION")
-    protected String description;
+    private String description;
 
     @Column(name = "LENGTH")
-    protected String length;
+    private String length;
 
     @Column(name = "MINAGE")
-    protected String minAge;
+    private String minAge;
 
     public Integer getId() {
         return id;

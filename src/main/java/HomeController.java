@@ -1,18 +1,23 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class HomeController implements HierarchicalController<HomeController>{
 
-    public Pane pane;
-    public GridPane buttons;
+    public BorderPane borderPane;
     private DataContainer dataContainer;
+    private HomeController parentController;
+
+    private Stage myStage;
+
+    void setStage(Stage myStage) {
+        this.myStage = myStage;
+    }
 
     DataContainer getDataContainer() {
         return dataContainer;
@@ -22,35 +27,6 @@ public class HomeController implements HierarchicalController<HomeController>{
         dataContainer = new DataContainer();
     }
 
-    public void initialize() {
-        Image img = new Image("cinema.jpg");
-        ImageView imgView = new ImageView(img);
-        pane.getChildren().add(imgView);
-    }
-
-
-    public void movieTable(ActionEvent actionEvent) {
-        loadIntoPane("movieTable.fxml");
-    }
-
-    public void showCreator(ActionEvent actionEvent) {
-        loadIntoPane("showCreator.fxml");
-    }
-
-    private void loadIntoPane(String fxml) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        try {
-            final BorderPane load = loader.load();
-            pane.getChildren().clear();
-            pane.getChildren().add(load);
-            HierarchicalController<HomeController> dataController = loader.getController();
-            dataController.setParentController(this);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public HomeController getParentController() {
         return this;
@@ -58,6 +34,39 @@ public class HomeController implements HierarchicalController<HomeController>{
 
     @Override
     public void setParentController(HomeController parentController) {
+        this.parentController = parentController;
+    }
+
+    public void showUserView(ActionEvent actionEvent) {
+        loadWindow("movieSearch.fxml", false);
+    }
+
+    public void showAdminView(ActionEvent actionEvent) {
+        loadWindow("movieSearch.fxml", true);
+    }
+
+    public void loadWindow(String fxml, boolean showAdminFun) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+        try {
+            Parent root = loader.load();
+            HierarchicalController<HomeController> dataController = loader.getController();
+            dataController.setParentController(this);
+
+            Stage stage = new Stage();
+            stage.setTitle("Cinema");
+            stage.setScene(new Scene(root, 1080, 720));
+            stage.show();
+
+            MovieSearch directController = loader.getController();
+
+            directController.deleteButton.setVisible(showAdminFun);
+            directController.addButton.setVisible(showAdminFun);
+
+            myStage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
     }
 
 }

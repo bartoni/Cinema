@@ -1,4 +1,5 @@
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "HALLS")
@@ -10,15 +11,25 @@ public class Hall {
     protected Integer id;
 
     @Column(name = "NUMBER")
-    protected String number;
+    private String number;
 
     @Column(name = "SEATS")
-    protected String seats;
+    private String seats;
 
     @Column(name = "TYPE")
-    protected String type;
+    private String type;
 
+    @ManyToMany
+    @JoinTable(name = "HALLS_FOR_SHOWS", joinColumns = @JoinColumn(name = "HALL_ID"), inverseJoinColumns = @JoinColumn(name = "SHOW_ID"))
+    private List<Show> shows;
 
+    public List<Show> getShows() {
+        return shows;
+    }
+
+    public void setShows(List<Show> shows) {
+        this.shows = shows;
+    }
 
     public Integer getId() {
         return id;

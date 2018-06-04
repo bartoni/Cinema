@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import org.hibernate.HibernateException;
@@ -25,6 +26,11 @@ public class ShowCreator implements HierarchicalController<HomeController> {
     public ToggleGroup ageCategory;
     public TextArea description;
     public TextField length;
+    public DatePicker datePicker;
+    public TextField hourField;
+    public TextField minuteField;
+    public Button addShow;
+    public BorderPane borderPane;
     private HomeController parentController;
 
     public void fillMovies(javafx.scene.input.MouseEvent mouseEvent) {
@@ -92,6 +98,20 @@ public class ShowCreator implements HierarchicalController<HomeController> {
         ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
     }
 
+    public void onBack(ActionEvent actionEvent) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("movieSearch.fxml"));
+        try {
+            final BorderPane load = loader.load();
+            borderPane.getChildren().clear();
+            borderPane.getChildren().add(load);
+            HierarchicalController<HomeController> dataController = loader.getController();
+            dataController.setParentController(parentController);
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+    }
+
     @Override
     public HomeController getParentController() {
         return parentController;
@@ -101,4 +121,6 @@ public class ShowCreator implements HierarchicalController<HomeController> {
     public void setParentController(HomeController parentController) {
         this.parentController = parentController;
     }
+
+
 }

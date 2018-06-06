@@ -14,6 +14,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 
@@ -66,12 +67,10 @@ public class MovieSearch implements HierarchicalController<HomeController> {
 
     public void initialize() {
         for (javafx.scene.control.TableColumn<Show, ?> showTableColumn : repertoireTable.getColumns()) {
-            if ("id".equals(showTableColumn.getId())) {
-                showTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-            } else if ("date".equals(showTableColumn.getId())) {
-                showTableColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-            } else if ("time".equals(showTableColumn.getId())) {
+            if ("time".equals(showTableColumn.getId())) {
                 showTableColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+            } else if ("hall".equals(showTableColumn.getId())) {
+                showTableColumn.setCellValueFactory(new PropertyValueFactory<>("hall"));
             }
         }
 
@@ -114,6 +113,32 @@ public class MovieSearch implements HierarchicalController<HomeController> {
         }
     }
 
+    public void onChosenDay(ActionEvent actionEvent) {
+        if (datePicker.getValue() != null) {
+            repertoireTable.setVisible(true);
+            repertoireTable.getItems().clear();
+            try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
+                ses.beginTransaction();
+                Query query = ses.createQuery("from Show show where show.date = :date");
+                LocalDate date = datePicker.getValue();
+                query.setParameter("date", date);
+                List<Show> s = query.list();
+
+                //ok - udaje mi się zebrać listę seansów, które zapisalem na dany dzien, ale nie wiem jak sie dostac do
+                //do sali, do ktorej z tabelki SHOW powinienem sie generalnie moc dostac (a jak probuje to chamsko
+                //wyprintowac do konsoli, to dostaje adres obiektu typu @Hall#13878463.. .
+
+                repertoireTable.getItems().addAll(s);
+                ses.getTransaction().commit();
+            } catch (HibernateException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+                alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                alert.show();
+            }
+
+        }
+    }
+
     @Override
     public HomeController getParentController() {
         return parentController;
@@ -123,4 +148,6 @@ public class MovieSearch implements HierarchicalController<HomeController> {
     public void setParentController(HomeController parentController) {
         this.parentController = parentController;
     }
+
+
 }

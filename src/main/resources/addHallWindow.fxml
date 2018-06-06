@@ -11,7 +11,8 @@
         <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="275.0" prefWidth="440.0"
               BorderPane.alignment="CENTER">
             <children>
-                <TextField fx:id="name" promptText="Nazwa filmu">
+                <TextField fx:id="number" maxWidth="-Infinity" prefHeight="31.0" prefWidth="154.0"
+                           promptText="Numer sali">
                     <opaqueInsets>
                         <Insets/>
                     </opaqueInsets>
@@ -23,27 +24,25 @@
                     <children>
                         <VBox prefHeight="222.0" prefWidth="198.0">
                             <children>
-                                <Label prefHeight="21.0" prefWidth="210.0" text="Kategoria ograniczenia wieku:">
+                                <Label prefHeight="21.0" prefWidth="210.0" text="Określ typ sali:">
                                     <VBox.margin>
                                         <Insets bottom="10.0"/>
                                     </VBox.margin>
                                 </Label>
-                                <RadioButton mnemonicParsing="false" text="G">
+                                <RadioButton mnemonicParsing="false" text="Mała">
                                     <toggleGroup>
-                                        <ToggleGroup fx:id="ageCategory"/>
+                                        <ToggleGroup fx:id="hallType"/>
                                     </toggleGroup>
                                 </RadioButton>
-                                <RadioButton mnemonicParsing="false" text="PG" toggleGroup="$ageCategory"/>
-                                <RadioButton mnemonicParsing="false" text="PG-13" toggleGroup="$ageCategory"/>
-                                <RadioButton mnemonicParsing="false" text="R" toggleGroup="$ageCategory"/>
-                                <RadioButton mnemonicParsing="false" text="NC-17" toggleGroup="$ageCategory"/>
-                                <TextField fx:id="length" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="31.0"
-                                           prefWidth="115.0" promptText="Długość (min.)">
+                                <RadioButton mnemonicParsing="false" text="Średnia" toggleGroup="$hallType"/>
+                                <RadioButton mnemonicParsing="false" text="Duża" toggleGroup="$hallType"/>
+                                <TextField fx:id="seats" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="31.0"
+                                           prefWidth="115.0" promptText="Ilość miejsc">
                                     <VBox.margin>
                                         <Insets top="20.0"/>
                                     </VBox.margin>
                                 </TextField>
-                                <Button mnemonicParsing="false" onAction="#add" text="Dodaj">
+                                <Button mnemonicParsing="false" onAction="#addHall" text="Dodaj">
                                     <font>
                                         <Font name="System Bold" size="15.0"/>
                                     </font>
@@ -53,12 +52,6 @@
                                 </Button>
                             </children>
                         </VBox>
-                        <TextArea fx:id="description" prefHeight="238.0" prefWidth="224.0" promptText="Opis filmu"
-                                  wrapText="true">
-                            <HBox.margin>
-                                <Insets left="20.0"/>
-                            </HBox.margin>
-                        </TextArea>
                     </children>
                 </HBox>
             </children>

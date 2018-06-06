@@ -37,7 +37,7 @@
                         <Font size="20.0"/>
                     </font>
                 </Label>
-                <DatePicker fx:id="datePicker" promptText="Wybierz dzień" visible="false">
+                <DatePicker fx:id="datePicker" onAction="#onChosenDay" promptText="Wybierz dzień" visible="false">
                     <VBox.margin>
                         <Insets top="20.0"/>
                     </VBox.margin>
@@ -45,8 +45,8 @@
                 <TableView fx:id="repertoireTable" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0"
                            visible="false">
                     <columns>
-                        <TableColumn prefWidth="148.0" text="Godzina"/>
-                        <TableColumn prefWidth="51.0" text="Sala"/>
+                        <TableColumn id="time" prefWidth="148.0" text="Godzina"/>
+                        <TableColumn id="hall" prefWidth="51.0" text="Sala"/>
                     </columns>
                     <VBox.margin>
                         <Insets top="20.0"/>

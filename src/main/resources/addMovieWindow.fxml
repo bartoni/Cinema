@@ -43,7 +43,7 @@
                                         <Insets top="20.0"/>
                                     </VBox.margin>
                                 </TextField>
-                                <Button mnemonicParsing="false" onAction="#add" text="Dodaj">
+                                <Button mnemonicParsing="false" onAction="#addMovie" text="Dodaj">
                                     <font>
                                         <Font name="System Bold" size="15.0"/>
                                     </font>

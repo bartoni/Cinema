@@ -16,7 +16,10 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 public class ShowCreator implements HierarchicalController<HomeController> {
 
@@ -29,8 +32,10 @@ public class ShowCreator implements HierarchicalController<HomeController> {
     public DatePicker datePicker;
     public TextField hourField;
     public TextField minuteField;
-    public Button addShow;
     public BorderPane borderPane;
+    public TextField number;
+    public ToggleGroup hallType;
+    public TextField seats;
     private HomeController parentController;
 
     public void fillMovies(javafx.scene.input.MouseEvent mouseEvent) {
@@ -63,7 +68,7 @@ public class ShowCreator implements HierarchicalController<HomeController> {
         hallPicker.getItems().addAll(halls);
     }
 
-    public void addMovie(ActionEvent actionEvent) {
+    public void addMovieWindow(ActionEvent actionEvent) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("addMovieWindow.fxml"));
         try {
             Parent root = loader.load();
@@ -78,7 +83,46 @@ public class ShowCreator implements HierarchicalController<HomeController> {
         }
     }
 
-    public void add(ActionEvent actionEvent) {
+
+    public void addHallWindow(ActionEvent actionEvent) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("addHallWindow.fxml"));
+        try {
+            Parent root = loader.load();
+            ShowCreator dataController = loader.getController();
+            dataController.setParentController(parentController);
+            Stage stage = new Stage();
+            stage.setTitle("AddHallWindow");
+            stage.setScene(new Scene(root, 540, 360));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addShow(ActionEvent actionEvent) {
+        Show s = new Show();
+        s.setDate(datePicker.getValue());
+        s.setTime(hourField.getText() + ":" + minuteField.getText());
+        Set<Hall> halls = new HashSet<>();
+        try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
+            ses.beginTransaction();
+            Query query = ses.createQuery("from Hall hall where hall.number = :number");
+            String number = hallPicker.getValue();
+            query.setParameter("number", number);
+            List hList = query.list();
+            Hall hall = (Hall) hList.get(0);
+            halls.add(hall);
+            s.setHalls(halls);
+            ses.save(s);
+            ses.getTransaction().commit();
+        } catch (HibernateException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.show();
+        }
+    }
+
+    public void addMovie(ActionEvent actionEvent) {
         Movie m = new Movie();
         m.setName(name.getText());
         m.setDescription(description.getText());
@@ -89,6 +133,26 @@ public class ShowCreator implements HierarchicalController<HomeController> {
         try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
             ses.beginTransaction();
             ses.persist(m);
+            ses.getTransaction().commit();
+        } catch (HibernateException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.show();
+        }
+        ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+    }
+
+
+    public void addHall(ActionEvent actionEvent) {
+        Hall h = new Hall();
+        h.setNumber(number.getText());
+        RadioButton selRadioButton = (RadioButton) hallType.getSelectedToggle();
+        String value = selRadioButton.getText();
+        h.setType(value);
+        h.setSeats(seats.getText());
+        try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
+            ses.beginTransaction();
+            ses.persist(h);
             ses.getTransaction().commit();
         } catch (HibernateException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
@@ -121,6 +185,5 @@ public class ShowCreator implements HierarchicalController<HomeController> {
     public void setParentController(HomeController parentController) {
         this.parentController = parentController;
     }
-
 
 }

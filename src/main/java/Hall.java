@@ -1,5 +1,6 @@
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "HALLS")
@@ -19,15 +20,14 @@ public class Hall {
     @Column(name = "TYPE")
     private String type;
 
-    @ManyToMany
-    @JoinTable(name = "HALLS_FOR_SHOWS", joinColumns = @JoinColumn(name = "HALL_ID"), inverseJoinColumns = @JoinColumn(name = "SHOW_ID"))
-    private List<Show> shows;
+    @ManyToMany(mappedBy = "halls")
+    private Set<Show> shows = new HashSet<Show>();
 
-    public List<Show> getShows() {
+    public Set<Show> getShows() {
         return shows;
     }
 
-    public void setShows(List<Show> shows) {
+    public void setShows(Set<Show> shows) {
         this.shows = shows;
     }
 

@@ -27,7 +27,7 @@
                     <children>
                         <ComboBox fx:id="moviePicker" onMouseClicked="#fillMovies" prefHeight="31.0" prefWidth="267.0"
                                   promptText="Wybierz film..."/>
-                        <Button mnemonicParsing="false" onAction="#addMovie" text="+">
+                        <Button mnemonicParsing="false" onAction="#addMovieWindow" text="+">
                             <font>
                                 <Font name="System Bold" size="15.0"/>
                             </font>
@@ -38,9 +38,17 @@
                         <ComboBox fx:id="hallPicker" onMouseClicked="#fillHalls" prefWidth="150.0"
                                   promptText="Wybierz salę...">
                             <HBox.margin>
-                                <Insets right="50.0"/>
+                                <Insets/>
                             </HBox.margin>
                         </ComboBox>
+                        <Button mnemonicParsing="false" onAction="#addHallWindow" text="+">
+                            <HBox.margin>
+                                <Insets right="50.0"/>
+                            </HBox.margin>
+                            <font>
+                                <Font name="System Bold" size="15.0"/>
+                            </font>
+                        </Button>
                         <DatePicker fx:id="datePicker" prefHeight="31.0" prefWidth="148.0" promptText="Wybierz datę...">
                             <HBox.margin>
                                 <Insets right="50.0"/>
@@ -54,7 +62,7 @@
                         <TextField fx:id="minuteField" prefHeight="31.0" prefWidth="47.0" promptText="mm"/>
                     </children>
                 </HBox>
-                <Button fx:id="addShow" alignment="CENTER" mnemonicParsing="false" text="Dodaj seans"/>
+                <Button alignment="CENTER" mnemonicParsing="false" onAction="#addShow" text="Dodaj seans"/>
             </children>
         </VBox>
     </center>

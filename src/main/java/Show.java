@@ -1,7 +1,8 @@
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "SHOWS")
@@ -20,13 +21,13 @@ public class Show implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "HALLS_FOR_SHOWS", joinColumns = @JoinColumn(name = "SHOW_ID"), inverseJoinColumns = @JoinColumn(name = "HALL_ID"))
-    private List<Hall> halls;
+    private Set<Hall> halls = new HashSet<Hall>();
 
-    public List<Hall> getHalls() {
+    public Set<Hall> getHalls() {
         return halls;
     }
 
-    public void setHalls(List<Hall> halls) {
+    public void setHalls(Set<Hall> halls) {
         this.halls = halls;
     }
 

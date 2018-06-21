@@ -4,37 +4,29 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import java.io.IOException;
 
 public class HomeController implements HierarchicalController<HomeController>{
 
     public BorderPane borderPane;
-    private DataContainer dataContainer;
     private HomeController parentController;
-
     private Stage myStage;
-
-    void setStage(Stage myStage) {
-        this.myStage = myStage;
-    }
-
-    DataContainer getDataContainer() {
-        return dataContainer;
-    }
+    private final SessionFactory sessionFactory;
 
     public HomeController() {
-        dataContainer = new DataContainer();
+        Configuration config = new Configuration().configure("hibernate.cfg.xml");
+        sessionFactory = config.buildSessionFactory();
     }
 
-    @Override
-    public HomeController getParentController() {
-        return this;
+    SessionFactory getSessionFactory() {
+        return sessionFactory;
     }
 
-    @Override
-    public void setParentController(HomeController parentController) {
-        this.parentController = parentController;
+    public void setStage(Stage myStage) {
+        this.myStage = myStage;
     }
 
     public void showUserView(ActionEvent actionEvent) {
@@ -50,7 +42,7 @@ public class HomeController implements HierarchicalController<HomeController>{
         try {
             Parent root = loader.load();
             HierarchicalController<HomeController> dataController = loader.getController();
-            dataController.setParentController(this);
+            dataController.setParentController(parentController);
 
             Stage stage = new Stage();
             stage.setTitle("Cinema");
@@ -62,6 +54,8 @@ public class HomeController implements HierarchicalController<HomeController>{
             directController.deleteButton.setVisible(showAdminFun);
             directController.addButton.setVisible(showAdminFun);
 
+            dataController.setParentController(this);
+
             myStage.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,4 +63,13 @@ public class HomeController implements HierarchicalController<HomeController>{
         }
     }
 
+    @Override
+    public HomeController getParentController() {
+        return this;
+    }
+
+    @Override
+    public void setParentController(HomeController parentController) {
+        this.parentController = parentController;
+    }
 }

@@ -1,27 +1,22 @@
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "MOVIES")
 public class Movie implements Serializable {
 
+    private Integer id;
+    private String name;
+    private String description;
+    private String length;
+    private String minAge;
+    private Set<Show> showSet = new HashSet<>(0);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    protected Integer id;
-
-    @Column(name = "NAME")
-    protected String name;
-
-    @Column(name = "DESCRIPTION")
-    private String description;
-
-    @Column(name = "LENGTH")
-    private String length;
-
-    @Column(name = "MINAGE")
-    private String minAge;
-
+    @Column(name = "MOVIE_ID")
     public Integer getId() {
         return id;
     }
@@ -30,6 +25,7 @@ public class Movie implements Serializable {
         this.id = id;
     }
 
+    @Column(name = "NAME")
     public String getName() {
         return name;
     }
@@ -38,6 +34,7 @@ public class Movie implements Serializable {
         this.name = name;
     }
 
+    @Column(name = "DESCRIPTION")
     public String getDescription() {
         return description;
     }
@@ -46,6 +43,7 @@ public class Movie implements Serializable {
         this.description = description;
     }
 
+    @Column(name = "LENGTH")
     public String getLength() {
         return length;
     }
@@ -54,11 +52,21 @@ public class Movie implements Serializable {
         this.length = length;
     }
 
+    @Column(name = "MINAGE")
     public String getMinAge() {
         return minAge;
     }
 
     public void setMinAge(String minAge) {
         this.minAge = minAge;
+    }
+
+    @OneToMany
+    public Set<Show> getShowSet() {
+        return showSet;
+    }
+
+    public void setShowSet(Set<Show> showSet) {
+        this.showSet = showSet;
     }
 }

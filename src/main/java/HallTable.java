@@ -15,7 +15,7 @@ public class HallTable implements HierarchicalController<HomeController>{
     public TableView<Hall> hallTable;
 
     public void onDelete(ActionEvent actionEvent) {
-        try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
+        try (Session ses = parentController.getSessionFactory().openSession()) {
             ses.beginTransaction();
             Hall hall = ses.get(
                     Hall.class, hallTable.getItems().get(hallTable.getSelectionModel().getFocusedIndex()).getId());
@@ -40,7 +40,7 @@ public class HallTable implements HierarchicalController<HomeController>{
     }
 
     public void addBase(Hall hall) {
-        try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
+        try (Session ses = parentController.getSessionFactory().openSession()) {
             ses.beginTransaction();
             ses.persist(hall);
             ses.getTransaction().commit();

@@ -6,31 +6,15 @@ import java.util.Set;
 @Table(name = "HALLS")
 public class Hall {
 
+    private Integer id;
+    private String number;
+    private String seats;
+    private String type;
+    private Set<Show> showSet = new HashSet<>(0);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    protected Integer id;
-
-    @Column(name = "NUMBER")
-    private String number;
-
-    @Column(name = "SEATS")
-    private String seats;
-
-    @Column(name = "TYPE")
-    private String type;
-
-    @ManyToMany(mappedBy = "halls")
-    private Set<Show> shows = new HashSet<Show>();
-
-    public Set<Show> getShows() {
-        return shows;
-    }
-
-    public void setShows(Set<Show> shows) {
-        this.shows = shows;
-    }
-
+    @Column(name = "HALL_ID")
     public Integer getId() {
         return id;
     }
@@ -39,6 +23,7 @@ public class Hall {
         this.id = id;
     }
 
+    @Column(name = "NUMBER")
     public String getNumber() {
         return number;
     }
@@ -47,6 +32,7 @@ public class Hall {
         this.number = number;
     }
 
+    @Column(name = "SEATS")
     public String getSeats() {
         return seats;
     }
@@ -55,11 +41,21 @@ public class Hall {
         this.seats = seats;
     }
 
+    @Column(name = "TYPE")
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @OneToMany
+    public Set<Show> getShowSet() {
+        return showSet;
+    }
+
+    public void setShowSet(Set<Show> showSet) {
+        this.showSet = showSet;
     }
 }

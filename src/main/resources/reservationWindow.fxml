@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="360.0" prefWidth="540.0" xmlns="http://javafx.com/javafx/8.0.141"
+            fx:controller="ReservationWindow">
+    <center>
+        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="275.0" prefWidth="440.0"
+              BorderPane.alignment="CENTER">
+            <children>
+                <Label prefHeight="21.0" prefWidth="412.0"
+                       text="Aby zarezerwować, wpisz adres mailowy i podaj liczbę miejsc">
+                    <VBox.margin>
+                        <Insets bottom="20.0"/>
+                    </VBox.margin>
+                </Label>
+                <VBox prefHeight="222.0" prefWidth="198.0">
+                    <children>
+                        <Label text="Wybrany seans:">
+                            <VBox.margin>
+                                <Insets bottom="10.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <HBox>
+                            <children>
+                                <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="63.0" prefWidth="220.0">
+                                    <children>
+                                        <Label fx:id="movieLabel"/>
+                                        <Label fx:id="dateLabel"/>
+                                        <Label fx:id="timeLabel"/>
+                                    </children>
+                                </VBox>
+                                <VBox alignment="TOP_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="63.0"
+                                      prefWidth="220.0">
+                                    <children>
+                                        <Label fx:id="numberLabel"/>
+                                        <Label fx:id="typeLabel"/>
+                                        <Label fx:id="seatsLabel"/>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        <TextField fx:id="emailField" maxWidth="-Infinity" prefHeight="31.0" prefWidth="260.0"
+                                   promptText="Twój adres mailowy">
+                            <opaqueInsets>
+                                <Insets/>
+                            </opaqueInsets>
+                            <VBox.margin>
+                                <Insets top="20.0"/>
+                            </VBox.margin>
+                        </TextField>
+                        <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="440.0">
+                            <children>
+                                <Label alignment="CENTER" contentDisplay="CENTER" text="Ilość miejsc:">
+                                    <HBox.margin>
+                                        <Insets right="10.0" top="20.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <TextField fx:id="seatsField" alignment="CENTER" prefHeight="31.0" prefWidth="34.0">
+                                    <HBox.margin>
+                                        <Insets top="20.0"/>
+                                    </HBox.margin>
+                                </TextField>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="10.0"/>
+                            </VBox.margin>
+                        </HBox>
+                    </children>
+                </VBox>
+                <Button fx:id="reservationButton" mnemonicParsing="false" onAction="#makeReservation" text="Rezerwuję">
+                    <font>
+                        <Font name="System Bold" size="15.0"/>
+                    </font>
+                    <VBox.margin>
+                        <Insets top="20.0"/>
+                    </VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

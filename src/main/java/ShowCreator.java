@@ -11,15 +11,11 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 public class ShowCreator implements HierarchicalController<HomeController> {
 
@@ -41,8 +37,7 @@ public class ShowCreator implements HierarchicalController<HomeController> {
     public void fillMovies(javafx.scene.input.MouseEvent mouseEvent) {
         moviePicker.getItems().clear();
         ObservableList<String> movies = FXCollections.observableArrayList();
-        SessionFactory sf = new Configuration().configure().buildSessionFactory();
-        Session ses = sf.openSession();
+        Session ses = parentController.getSessionFactory().openSession();
         Query query = ses.createQuery("from Movie", Movie.class);
         Iterator ite = query.iterate();
         while (ite.hasNext()) {
@@ -51,13 +46,13 @@ public class ShowCreator implements HierarchicalController<HomeController> {
             movies.add(obj.getName());
         }
         moviePicker.getItems().addAll(movies);
+        ses.close();
     }
 
     public void fillHalls(javafx.scene.input.MouseEvent mouseEvent) {
         hallPicker.getItems().clear();
         ObservableList<String> halls = FXCollections.observableArrayList();
-        SessionFactory sf = new Configuration().configure().buildSessionFactory();
-        Session ses = sf.openSession();
+        Session ses = parentController.getSessionFactory().openSession();
         Query query = ses.createQuery("from Hall", Hall.class);
         Iterator ite = query.iterate();
         while (ite.hasNext()) {
@@ -66,6 +61,7 @@ public class ShowCreator implements HierarchicalController<HomeController> {
             halls.add(obj.getNumber());
         }
         hallPicker.getItems().addAll(halls);
+        ses.close();
     }
 
     public void addMovieWindow(ActionEvent actionEvent) {
@@ -103,16 +99,23 @@ public class ShowCreator implements HierarchicalController<HomeController> {
         Show s = new Show();
         s.setDate(datePicker.getValue());
         s.setTime(hourField.getText() + ":" + minuteField.getText());
-        Set<Hall> halls = new HashSet<>();
-        try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
+        try (Session ses = parentController.getSessionFactory().openSession()) {
             ses.beginTransaction();
-            Query query = ses.createQuery("from Hall hall where hall.number = :number");
+
+            Query hallQuery = ses.createQuery("from Hall hall where hall.number = :number");
             String number = hallPicker.getValue();
-            query.setParameter("number", number);
-            List hList = query.list();
+            hallQuery.setParameter("number", number);
+            List hList = hallQuery.list();
             Hall hall = (Hall) hList.get(0);
-            halls.add(hall);
-            s.setHalls(halls);
+            s.setHall(hall);
+
+            Query movieQuery = ses.createQuery("from Movie movie where movie.name = :name");
+            String name = moviePicker.getValue();
+            movieQuery.setParameter("name", name);
+            List mList = movieQuery.list();
+            Movie movie = (Movie) mList.get(0);
+            s.setMovie(movie);
+
             ses.save(s);
             ses.getTransaction().commit();
         } catch (HibernateException e) {
@@ -130,7 +133,7 @@ public class ShowCreator implements HierarchicalController<HomeController> {
         RadioButton selRadioButton = (RadioButton) ageCategory.getSelectedToggle();
         String value = selRadioButton.getText();
         m.setMinAge(value);
-        try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
+        try (Session ses = parentController.getSessionFactory().openSession()) {
             ses.beginTransaction();
             ses.persist(m);
             ses.getTransaction().commit();
@@ -150,7 +153,7 @@ public class ShowCreator implements HierarchicalController<HomeController> {
         String value = selRadioButton.getText();
         h.setType(value);
         h.setSeats(seats.getText());
-        try (Session ses = parentController.getDataContainer().getSessionFactory().openSession()) {
+        try (Session ses = parentController.getSessionFactory().openSession()) {
             ses.beginTransaction();
             ses.persist(h);
             ses.getTransaction().commit();

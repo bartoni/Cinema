@@ -20,6 +20,7 @@ public class Main extends Application {
         primaryStage.show();
 
         HomeController controller = loader.getController();
+        controller.setParentController(controller);
         controller.setStage(primaryStage);
     }
 

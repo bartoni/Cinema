@@ -51,9 +51,9 @@ public class HomeController implements HierarchicalController<HomeController>{
 
             MovieSearch directController = loader.getController();
 
-            directController.deleteButton.setVisible(showAdminFun);
-            directController.addButton.setVisible(showAdminFun);
+            directController.initData(showAdminFun);
 
+            directController.setAdmin(showAdminFun);
             dataController.setParentController(this);
 
             myStage.close();

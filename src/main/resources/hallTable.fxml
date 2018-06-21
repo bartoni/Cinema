@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HallTable">
-    <center>
-        <TableView fx:id="hallTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <columns>
-                <TableColumn id="number" prefWidth="189.0" text="Numer sali" />
-                <TableColumn id="seats" prefWidth="233.0" text="Ilość miejsc" />
-                <TableColumn id="type" prefWidth="176.0" text="Typ sali" />
-            </columns>
-        </TableView>
-    </center>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="360.0" prefWidth="540.0" xmlns="http://javafx.com/javafx/8.0.141"
+            fx:controller="HallTable">
     <right>
-        <VBox prefHeight="436.0" prefWidth="172.0" BorderPane.alignment="CENTER">
+        <VBox alignment="BOTTOM_RIGHT" prefHeight="360.0" prefWidth="74.0" BorderPane.alignment="BOTTOM_RIGHT">
             <children>
-                <TextField fx:id="number" promptText="Numer sali" />
-                <TextField fx:id="seats" promptText="Ilość miejsc" />
-                <TextField fx:id="type" layoutX="10.0" layoutY="49.0" promptText="Typ sali" />
-                <Button mnemonicParsing="false" onAction="#add" text="Dodaj" />
-                <Button mnemonicParsing="false" onAction="#onDelete" text="Usuń" />
-                <AnchorPane fx:id="poster" prefHeight="246.0" prefWidth="172.0" />
+                <Button mnemonicParsing="false" onAction="#onDelete" text="Usuń">
+                    <VBox.margin>
+                        <Insets bottom="20.0" right="20.0"/>
+                    </VBox.margin>
+                </Button>
             </children>
         </VBox>
     </right>
+    <center>
+        <TableView fx:id="hallTable" prefHeight="360.0" prefWidth="114.0" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn id="number" prefWidth="140.0" text="Numer sali"/>
+                <TableColumn id="seats" prefWidth="167.0" text="Ilość miejsc"/>
+                <TableColumn id="type" maxWidth="118.0" minWidth="-Infinity" prefWidth="117.0" text="Typ sali"/>
+            </columns>
+            <BorderPane.margin>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </BorderPane.margin>
+        </TableView>
+    </center>
 </BorderPane>

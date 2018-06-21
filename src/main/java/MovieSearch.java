@@ -30,15 +30,23 @@ public class MovieSearch implements HierarchicalController<HomeController> {
     public Label ageCategory;
     public Label length;
     public Label repertoireLabel;
-    public Button deleteButton;
+    public Button deleteMovieButton;
     public Button addButton;
     public TableColumn timeCol;
     public TableColumn reservationCol;
-
+    public Button deleteShowButton;
+    public Button showHalls;
+    private boolean isAdmin;
 
     private HomeController parentController;
 
-    public void onDelete(ActionEvent actionEvent) {
+    public void initData(boolean isAdmin) {
+        showHalls.setVisible(isAdmin);
+        deleteMovieButton.setVisible(isAdmin);
+        addButton.setVisible(isAdmin);
+    }
+
+    public void onMovieDelete(ActionEvent actionEvent) {
         try (Session ses = parentController.getSessionFactory().openSession()) {
             ses.beginTransaction();
             String name = movieList.getSelectionModel().getSelectedItem();
@@ -54,7 +62,6 @@ public class MovieSearch implements HierarchicalController<HomeController> {
                 Show obj = (Show) ite.next();
                 ses.delete(obj);
             }
-
             ses.delete(m.get(0));
             ses.getTransaction().commit();
         } catch (HibernateException e) {
@@ -150,6 +157,7 @@ public class MovieSearch implements HierarchicalController<HomeController> {
     public void onClick(MouseEvent mouseEvent) {
         onChosenDay(new ActionEvent());
         if (movieList.getSelectionModel().getSelectedItem() != null) {
+            deleteMovieButton.setDisable(false);
             description.setVisible(true);
             length.setVisible(true);
             ageCategory.setVisible(true);
@@ -177,6 +185,7 @@ public class MovieSearch implements HierarchicalController<HomeController> {
 
     public void onChosenDay(ActionEvent actionEvent) {
         if (datePicker.getValue() != null) {
+            deleteShowButton.setVisible(isAdmin);
             repertoireTable.setVisible(true);
             repertoireTable.getItems().clear();
             try (Session ses = parentController.getSessionFactory().openSession()) {
@@ -231,6 +240,45 @@ public class MovieSearch implements HierarchicalController<HomeController> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void showHalls(ActionEvent actionEvent) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("hallTable.fxml"));
+        try {
+            BorderPane borderPane = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("HallTable");
+            stage.setScene(new Scene(borderPane, 540, 360));
+            stage.show();
+
+            HierarchicalController<HomeController> controller = loader.getController();
+            controller.setParentController(parentController);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onShowDelete(ActionEvent actionEvent) {
+        try (Session ses = parentController.getSessionFactory().openSession()) {
+            ses.beginTransaction();
+            Show show = repertoireTable.getSelectionModel().getSelectedItem();
+            Query showQuery = ses.createQuery("from Show show where show.id = :id");
+            Integer id = show.getId();
+            showQuery.setParameter("id", id);
+            List s = showQuery.list();
+            ses.delete(s.get(0));
+            ses.getTransaction().commit();
+        } catch (HibernateException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.show();
+        }
+        repertoireTable.getItems().remove(repertoireTable.getSelectionModel().getSelectedItem());
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 
     @Override

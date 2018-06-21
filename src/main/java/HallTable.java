@@ -1,25 +1,42 @@
 import javafx.event.ActionEvent;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class HallTable implements HierarchicalController<HomeController>{
 
     private HomeController parentController;
 
-    public TextField number;
-    public TextField seats;
-    public TextField type;
     public TableView<Hall> hallTable;
 
     public void onDelete(ActionEvent actionEvent) {
         try (Session ses = parentController.getSessionFactory().openSession()) {
             ses.beginTransaction();
-            Hall hall = ses.get(
-                    Hall.class, hallTable.getItems().get(hallTable.getSelectionModel().getFocusedIndex()).getId());
-            ses.delete(hall);
+
+            Hall hall = hallTable.getItems().get(hallTable.getSelectionModel().getFocusedIndex());
+
+            Query showQuery = ses.createQuery("from Show show where show.hall = :hall");
+            showQuery.setParameter("hall", hall);
+
+            Iterator ite = showQuery.iterate();
+            while (ite.hasNext()) {
+                Show obj = (Show) ite.next();
+                ses.delete(obj);
+            }
+
+            Hall hallBase = ses.get(
+                    Hall.class, hall.getId());
+            ses.delete(hallBase);
+
             ses.getTransaction().commit();
         } catch (HibernateException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
@@ -27,28 +44,6 @@ public class HallTable implements HierarchicalController<HomeController>{
             alert.show();
         }
         hallTable.getItems().remove(hallTable.getSelectionModel().getFocusedIndex());
-    }
-
-
-    public void add(ActionEvent actionEvent) {
-        Hall h = new Hall();
-        h.setNumber(number.getText());
-        h.setSeats(seats.getText());
-        h.setType(type.getText());
-        addBase(h);
-        hallTable.getItems().add(h);
-    }
-
-    public void addBase(Hall hall) {
-        try (Session ses = parentController.getSessionFactory().openSession()) {
-            ses.beginTransaction();
-            ses.persist(hall);
-            ses.getTransaction().commit();
-        } catch (HibernateException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
-            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-            alert.show();
-        }
     }
 
 
@@ -63,6 +58,22 @@ public class HallTable implements HierarchicalController<HomeController>{
             } else if ("type".equals(hallTableColumn.getId())) {
                 hallTableColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
             }
+        }
+        if (parentController == null) {
+            this.parentController = new HomeController();
+        }
+        hallTable.getItems().clear();
+
+        try (Session ses = parentController.getSessionFactory().openSession()) {
+            ses.beginTransaction();
+            Query query = ses.createQuery("from Hall");
+            List<Hall> h = query.list();
+            hallTable.getItems().addAll(h);
+            ses.close();
+        } catch (HibernateException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.show();
         }
     }
 

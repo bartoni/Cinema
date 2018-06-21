@@ -173,6 +173,8 @@ public class ShowCreator implements HierarchicalController<HomeController> {
             borderPane.getChildren().add(load);
             HierarchicalController<HomeController> dataController = loader.getController();
             dataController.setParentController(parentController);
+            MovieSearch directController = loader.getController();
+            directController.initData(true);
         } catch (IOException e) {
             e.printStackTrace();
 

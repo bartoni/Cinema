@@ -106,6 +106,12 @@
         <HBox alignment="BOTTOM_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="522.0"
               BorderPane.alignment="CENTER">
             <children>
+                <Button fx:id="showShows" mnemonicParsing="false" onAction="#showShows"
+                        text="Wyświetl wszystkie seanse">
+                    <HBox.margin>
+                        <Insets right="10.0"/>
+                    </HBox.margin>
+                </Button>
                 <Button fx:id="showHalls" mnemonicParsing="false" onAction="#showHalls" text="Wyświetl sale">
                     <HBox.margin>
                         <Insets right="10.0"/>

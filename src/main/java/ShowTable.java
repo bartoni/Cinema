@@ -1,3 +1,4 @@
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -9,33 +10,24 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import java.util.Iterator;
 import java.util.List;
 
-public class HallTable implements HierarchicalController<HomeController>{
+public class ShowTable implements HierarchicalController<HomeController> {
 
+    public TableColumn<Show, String> hallColumn;
+    public TableColumn<Show, String> movieColumn;
+    public TableView<Show> showTable;
     private HomeController parentController;
-
-    public TableView<Hall> hallTable;
 
     public void onDelete(ActionEvent actionEvent) {
         try (Session ses = parentController.getSessionFactory().openSession()) {
             ses.beginTransaction();
 
-            Hall hall = hallTable.getItems().get(hallTable.getSelectionModel().getFocusedIndex());
+            Show show = showTable.getItems().get(showTable.getSelectionModel().getFocusedIndex());
 
-            Query showQuery = ses.createQuery("from Show show where show.hall = :hall");
-            showQuery.setParameter("hall", hall);
-
-            Iterator ite = showQuery.iterate();
-            while (ite.hasNext()) {
-                Show obj = (Show) ite.next();
-                ses.delete(obj);
-            }
-
-            Hall hallBase = ses.get(
-                    Hall.class, hall.getId());
-            ses.delete(hallBase);
+            Show showBase = ses.get(
+                    Show.class, show.getId());
+            ses.delete(showBase);
 
             ses.getTransaction().commit();
         } catch (HibernateException e) {
@@ -43,30 +35,33 @@ public class HallTable implements HierarchicalController<HomeController>{
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.show();
         }
-        hallTable.getItems().remove(hallTable.getSelectionModel().getFocusedIndex());
+        showTable.getItems().remove(showTable.getSelectionModel().getFocusedIndex());
     }
 
 
     public void initialize() {
-        for (TableColumn<Hall, ?> hallTableColumn : hallTable.getColumns()) {
-            if ("number".equals(hallTableColumn.getId())) {
-                hallTableColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
-            } else if ("seats".equals(hallTableColumn.getId())) {
-                hallTableColumn.setCellValueFactory(new PropertyValueFactory<>("seats"));
-            } else if ("type".equals(hallTableColumn.getId())) {
-                hallTableColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        for (TableColumn<Show, ?> showTableColumn : showTable.getColumns()) {
+            if ("date".equals(showTableColumn.getId())) {
+                showTableColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+            } else if ("time".equals(showTableColumn.getId())) {
+                showTableColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
             }
         }
+
+        hallColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getHall().getNumber()));
+
+        movieColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getMovie().getName()));
+
         if (parentController == null) {
             this.parentController = new HomeController();
         }
-        hallTable.getItems().clear();
+        showTable.getItems().clear();
 
         try (Session ses = parentController.getSessionFactory().openSession()) {
             ses.beginTransaction();
-            Query query = ses.createQuery("from Hall");
-            List<Hall> h = query.list();
-            hallTable.getItems().addAll(h);
+            Query query = ses.createQuery("from Show");
+            List<Show> s = query.list();
+            showTable.getItems().addAll(s);
             ses.close();
         } catch (HibernateException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);

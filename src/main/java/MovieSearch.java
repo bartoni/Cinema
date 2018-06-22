@@ -36,12 +36,14 @@ public class MovieSearch implements HierarchicalController<HomeController> {
     public TableColumn reservationCol;
     public Button deleteShowButton;
     public Button showHalls;
+    public Button showShows;
     private boolean isAdmin;
 
     private HomeController parentController;
 
     public void initData(boolean isAdmin) {
         showHalls.setVisible(isAdmin);
+        showShows.setVisible(isAdmin);
         deleteMovieButton.setVisible(isAdmin);
         addButton.setVisible(isAdmin);
     }
@@ -293,6 +295,23 @@ public class MovieSearch implements HierarchicalController<HomeController> {
             alert.show();
         }
         repertoireTable.getItems().remove(repertoireTable.getSelectionModel().getSelectedItem());
+    }
+
+    public void showShows(ActionEvent actionEvent) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("showTable.fxml"));
+        try {
+            BorderPane borderPane = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("ShowTable");
+            stage.setScene(new Scene(borderPane, 540, 360));
+            stage.show();
+
+            HierarchicalController<HomeController> controller = loader.getController();
+            controller.setParentController(parentController);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setAdmin(boolean admin) {

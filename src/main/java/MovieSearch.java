@@ -55,6 +55,8 @@ public class MovieSearch implements HierarchicalController<HomeController> {
             query.setParameter("name", name);
             List m = query.list();
 
+            //wyciagam z bazy wszystkie seanse z tym filmem
+
             Query showQuery = ses.createQuery("from Show show where show.movie = :movie");
             showQuery.setParameter("movie", m.get(0));
             Iterator ite = showQuery.iterate();
@@ -62,6 +64,9 @@ public class MovieSearch implements HierarchicalController<HomeController> {
                 Show obj = (Show) ite.next();
                 ses.delete(obj);
             }
+
+            //dany obiekt filmu trzeba usunac dopiero po usunieciu powiazanych z nim seansow
+
             ses.delete(m.get(0));
             ses.getTransaction().commit();
         } catch (HibernateException e) {
@@ -89,6 +94,8 @@ public class MovieSearch implements HierarchicalController<HomeController> {
 
     public void initialize() {
 
+        //to cale drzewko pod spodem ma na celu stworzenie przycisku 'rezerwuje!' w tabeli
+
         timeCol.setCellValueFactory(new PropertyValueFactory<>("time"));
         reservationCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
         Callback<TableColumn<Show, String>, TableCell<Show, String>> cellFactory
@@ -110,6 +117,7 @@ public class MovieSearch implements HierarchicalController<HomeController> {
                             btn.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
+                                    //klikniecie przycisku powoduje zaznaczenie wiersza, dzieki temu mam obiekt
                                     repertoireTable.getSelectionModel().select(getTableRow().getIndex());
                                     Show show = repertoireTable.getSelectionModel().getSelectedItem();
                                     addReservationWindow(actionEvent, show);
@@ -154,9 +162,13 @@ public class MovieSearch implements HierarchicalController<HomeController> {
         ses.close();
     }
 
+    //metoda obsluguje wybor filmu z tej horyzontalnej listy na gorze
+
     public void onClick(MouseEvent mouseEvent) {
+        //za kazdym razem jak klikne w jakis film to uaktualnie repertuar wyswietlany w tabelce - b fajne
         onChosenDay(new ActionEvent());
         if (movieList.getSelectionModel().getSelectedItem() != null) {
+            //stopniowo odslaniam elementy interfejsu
             deleteMovieButton.setDisable(false);
             description.setVisible(true);
             length.setVisible(true);
@@ -182,6 +194,8 @@ public class MovieSearch implements HierarchicalController<HomeController> {
         } else {
         }
     }
+
+    //metoda do obslugi wyboru repertuaru na dany dzien dla danego filmu
 
     public void onChosenDay(ActionEvent actionEvent) {
         if (datePicker.getValue() != null) {
@@ -233,6 +247,8 @@ public class MovieSearch implements HierarchicalController<HomeController> {
             String type = show.getHall().getType();
             String seats = show.getHall().getSeats();
 
+            //przekazuje dalej niezbedne do wydrukowania rezerwacji informacje
+
             controller.initData(name, date, time, number, type, seats, show);
 
             controller.setParentController(parentController);
@@ -258,6 +274,8 @@ public class MovieSearch implements HierarchicalController<HomeController> {
             e.printStackTrace();
         }
     }
+
+    //kazdy seans moge sobie usunac bez wzgledu na jego powiazanie z sala czy filmem, bo jest rodzicem w tej relacji
 
     public void onShowDelete(ActionEvent actionEvent) {
         try (Session ses = parentController.getSessionFactory().openSession()) {

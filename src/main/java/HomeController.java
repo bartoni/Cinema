@@ -16,6 +16,8 @@ public class HomeController implements HierarchicalController<HomeController>{
     private Stage myStage;
     private final SessionFactory sessionFactory;
 
+    //SessionFactory przeniesione tutaj, bo DataContainer przestal byc potrzebny w sumie
+
     public HomeController() {
         Configuration config = new Configuration().configure("hibernate.cfg.xml");
         sessionFactory = config.buildSessionFactory();
@@ -28,6 +30,8 @@ public class HomeController implements HierarchicalController<HomeController>{
     public void setStage(Stage myStage) {
         this.myStage = myStage;
     }
+
+    //prosty sposob przekazywania statusu admin/uzytkownik
 
     public void showUserView(ActionEvent actionEvent) {
         loadWindow("movieSearch.fxml", false);

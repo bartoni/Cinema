@@ -49,8 +49,10 @@ public class ReservationWindow implements HierarchicalController<HomeController>
     }
 
     public void makeReservation(ActionEvent actionEvent) throws IOException {
+        //zabezpieczenie przed brakiem adresu, proba zarezerwowania wiekszej ilosci miejsc niz ma sala, albo proba
+        //zarezerwowania pustej liczby miejsc
         if ((emailField.getText().equals("")) || (Integer.parseInt(seatsField.getText()) > Integer.parseInt(
-                seatsLabel.getText().replaceAll("\\D+", "")))) {
+                seatsLabel.getText().replaceAll("\\D+", ""))) || (seatsField.getText().equals(""))) {
             final Stage dialog = new Stage();
             dialog.initModality(Modality.APPLICATION_MODAL);
             VBox dialogVbox = new VBox(20);
